@@ -19,5 +19,13 @@ pipeline {
                 '''
             }
         }
+        stage('Test') {
+            sh '''
+                echo 'Test stage.....'
+                if test -f /var/jenkins_home/workspace/jenkins-pipeline-github-integration/build/index.html; then
+                    echo 'File exists'
+                npm test 
+            '''
+        }
     }
 }
