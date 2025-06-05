@@ -3,9 +3,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                sh "
-                    echo 'github integration'
-                "
+                echo 'github integration'
             }
         }
     }
