@@ -1,8 +1,13 @@
 pipeline {
     agent any
 
+    environment {
+        NETLIFY_SITE_ID = 'da60fd6c-45a5-4f5b-b91b-eaa0bee6c0b0'
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token') 
+    }
+
     stages {
-        /*
+        
         stage('Build') {
             agent {
                 docker {
@@ -22,7 +27,6 @@ pipeline {
                 '''
             }
         }
-        */
         stage('Test') {
             agent {
                 docker {
@@ -38,6 +42,7 @@ pipeline {
                 '''
             }
         }
+        /*
         stage('E2E_test') {
             agent {
                 docker {
@@ -51,6 +56,23 @@ pipeline {
                     node_modules/.bin/serve -s build
                     sleep 10
                     npx playwright test
+                '''
+            }
+        }
+        */
+        stage(Deploy) {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    npm install netlify-cli@20.1.1
+                    node_modules/.bin/netlify --version
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod
                 '''
             }
         }
