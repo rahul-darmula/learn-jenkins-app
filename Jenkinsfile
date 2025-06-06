@@ -17,6 +17,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo 'adding a line to check poll'
                     echo 'Build stage......'
                     ls -la
                     node --version
